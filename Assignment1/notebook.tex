@@ -1,0 +1,996 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{kernel}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Analysis of Hurricane Data - A Case Study of Atlantic
+Hurricanes}\label{analysis-of-hurricane-data---a-case-study-of-atlantic-hurricanes}
+
+    \subsection{Loading the libraries}\label{loading-the-libraries}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{\PYZsh{} For data munging and analysis}
+        \PY{k+kn}{library}\PY{p}{(}tidyverse\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} For parsing the html tables from the internet}
+        \PY{k+kn}{library}\PY{p}{(}rvest\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Need to fit the data to various distributions}
+        \PY{k+kn}{library}\PY{p}{(}fitdistrplus\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.0.0.9000     ✔ purrr   0.2.5     
+✔ tibble  1.4.2          ✔ dplyr   0.7.6     
+✔ tidyr   0.8.1          ✔ stringr 1.3.1     
+✔ readr   1.2.0          ✔ forcats 0.3.0     
+── Conflicts ────────────────────────────────────────── tidyverse\_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Loading required package: xml2
+
+Attaching package: ‘rvest’
+
+The following object is masked from ‘package:purrr’:
+
+    pluck
+
+The following object is masked from ‘package:readr’:
+
+    guess\_encoding
+
+Loading required package: MASS
+
+Attaching package: ‘MASS’
+
+The following object is masked from ‘package:dplyr’:
+
+    select
+
+Loading required package: survival
+Loading required package: npsurv
+Loading required package: lsei
+
+    \end{Verbatim}
+
+    \subsection{Converting years to
+decades}\label{converting-years-to-decades}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{\PYZsh{} Generate a hurricane decade list to segment our hurricane data into the }
+        \PY{c+c1}{\PYZsh{} corresponding decades}
+        hurricane\PYZus{}decades \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{p}{)}
+        hurricane\PYZus{}decade\PYZus{}year \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1850}
+        \PY{k+kr}{while} \PY{p}{(}hurricane\PYZus{}decade\PYZus{}year \PY{o}{\PYZlt{}=} \PY{l+m}{2020}\PY{p}{)}\PY{p}{\PYZob{}}
+          hurricane\PYZus{}decades \PY{o}{=} \PY{k+kt}{c}\PY{p}{(}hurricane\PYZus{}decades\PY{p}{,} hurricane\PYZus{}decade\PYZus{}year\PY{p}{)}
+          hurricane\PYZus{}decade\PYZus{}year \PY{o}{=} hurricane\PYZus{}decade\PYZus{}year \PY{o}{+} \PY{l+m}{10}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} convert\PYZus{}seasons\PYZus{}to\PYZus{}decade \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}x\PY{p}{)}\PY{p}{\PYZob{}}
+          index \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1}
+          \PY{k+kr}{while}\PY{p}{(}\PY{p}{(}index \PY{o}{+} \PY{l+m}{1}\PY{p}{)} \PY{o}{\PYZlt{}=} \PY{k+kp}{length}\PY{p}{(}hurricane\PYZus{}decades\PY{p}{)}\PY{p}{)}\PY{p}{\PYZob{}}
+            
+            \PY{k+kr}{if} \PY{p}{(}x \PY{o}{\PYZgt{}=} hurricane\PYZus{}decades\PY{p}{[[}index\PY{p}{]]} \PY{o}{\PYZam{}\PYZam{}} \PYZbs{}
+                x\PY{o}{\PYZlt{}} hurricane\PYZus{}decades\PY{p}{[[}index \PY{o}{+} \PY{l+m}{1}\PY{p}{]]}\PY{p}{)}\PY{p}{\PYZob{}}
+              \PY{k+kr}{return}\PY{p}{(}hurricane\PYZus{}decades\PY{p}{[[}index\PY{p}{]]}\PY{p}{)}
+            \PY{p}{\PYZcb{}}
+            index \PY{o}{\PYZlt{}\PYZhy{}} index \PY{o}{+} \PY{l+m}{1}
+          \PY{p}{\PYZcb{}}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \subsection{Parsing the html tables and process
+them}\label{parsing-the-html-tables-and-process-them}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{\PYZsh{} Function to get the html table given a url}
+        get\PYZus{}html\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}\PY{k+kp}{url}\PY{p}{)}\PY{p}{\PYZob{}}
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} url \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}} 
+            read\PYZus{}html \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+            html\PYZus{}nodes\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{table\PYZdq{}}\PY{p}{)}
+          
+          \PY{k+kr}{return}\PY{p}{(}hurricane\PYZus{}table\PY{p}{)}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Function to process category 4 hurricane tables}
+        process\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}category\PYZus{}4\PYZus{}hurricane\PYZus{}tables\PY{p}{)}\PY{p}{\PYZob{}}
+          processed\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} There are 5 different tables on the page and we get all of them by }
+        \PY{c+c1}{\PYZsh{} iterating through the raw hurricane table data from that page.}
+          \PY{k+kr}{for} \PY{p}{(}index \PY{k+kr}{in} \PY{l+m}{2}\PY{o}{:}\PY{l+m}{6}\PY{p}{)}\PY{p}{\PYZob{}}
+            
+            \PY{c+c1}{\PYZsh{} First get the raw table}
+            hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} html\PYZus{}table\PY{p}{(}category\PYZus{}4\PYZus{}hurricane\PYZus{}tables\PY{p}{[}index\PY{p}{]}\PY{p}{,} fill \PY{o}{=} \PY{n+nb+bp}{T}\PY{p}{)}\PY{p}{[[}\PY{l+m}{1}\PY{p}{]]}
+            
+            \PY{c+c1}{\PYZsh{} The first row contains the column names, so we remove it}
+            hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table\PY{p}{[}\PY{l+m}{\PYZhy{}1}\PY{p}{,} \PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{} The last row also contains some unnecessary information, }
+            \PY{c+c1}{\PYZsh{} so we remove the last row}
+            hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{head}\PY{p}{(}hurricane\PYZus{}table\PY{p}{,} \PY{l+m}{\PYZhy{}1}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Get only the Season column}
+            hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table\PY{p}{[}\PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Season\PYZdq{}}\PY{p}{)}\PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{} Convert the Seasons to decades}
+            hurricane\PYZus{}table\PY{o}{\PYZdl{}}Season\PYZus{}decade \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{unlist}\PY{p}{(}\PY{k+kp}{lapply}\PY{p}{(}hurricane\PYZus{}table\PY{o}{\PYZdl{}}Season\PY{p}{,} 
+                                                           convert\PYZus{}seasons\PYZus{}to\PYZus{}decade\PY{p}{)}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Group by Season\PYZus{}decade and sum the counts}
+            hurricane\PYZus{}table\PY{o}{\PYZdl{}}one\PYZus{}column \PY{o}{=} \PY{l+m}{1}
+            hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+              group\PYZus{}by\PY{p}{(}Season\PYZus{}decade\PY{p}{)} \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+              summarise\PY{p}{(}
+                total\PYZus{}hurricanes \PY{o}{=} \PY{k+kp}{sum}\PY{p}{(}one\PYZus{}column\PY{p}{)}
+              \PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Append the tables to the final list}
+            processed\PYZus{}hurricane\PYZus{}tables\PY{p}{[[}index\PY{p}{]]} \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table
+          \PY{p}{\PYZcb{}}
+          
+          \PY{c+c1}{\PYZsh{} Different tables contain the row for the same decade and }
+          \PY{c+c1}{\PYZsh{} hence we carry out a final group\PYZus{}by operation on the final processed}
+          \PY{c+c1}{\PYZsh{} table to get the final hurricane counts.}
+          processed\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} bind\PYZus{}rows\PY{p}{(}processed\PYZus{}hurricane\PYZus{}tables\PY{p}{)}
+          processed\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} processed\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+              group\PYZus{}by\PY{p}{(}Season\PYZus{}decade\PY{p}{)} \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+              summarise\PY{p}{(}
+                total\PYZus{}hurricanes \PY{o}{=} \PY{k+kp}{sum}\PY{p}{(}total\PYZus{}hurricanes\PY{p}{)}
+              \PY{p}{)}
+          \PY{k+kr}{return}\PY{p}{(}processed\PYZus{}hurricane\PYZus{}tables\PY{p}{)}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} Function to process category 5 hurricane tables}
+        process\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}category\PYZus{}5\PYZus{}hurricane\PYZus{}tables\PY{p}{)}\PY{p}{\PYZob{}}
+          
+          \PY{c+c1}{\PYZsh{} First get the raw table}
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} html\PYZus{}table\PY{p}{(}category\PYZus{}5\PYZus{}hurricane\PYZus{}tables\PY{p}{[}\PY{l+m}{2}\PY{p}{]}\PY{p}{,} fill \PY{o}{=} \PY{n+nb+bp}{T}\PY{p}{)}\PY{p}{[[}\PY{l+m}{1}\PY{p}{]]}
+          
+          \PY{c+c1}{\PYZsh{} The first row contains the column names, so we remove it}
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table\PY{p}{[}\PY{l+m}{\PYZhy{}1}\PY{p}{,} \PY{p}{]}
+          
+          \PY{c+c1}{\PYZsh{} The last row also contains some unnecessary information, }
+          \PY{c+c1}{\PYZsh{} so we remove the last row}
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{head}\PY{p}{(}hurricane\PYZus{}table\PY{p}{,} \PY{l+m}{\PYZhy{}1}\PY{p}{)}
+          
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table\PY{p}{[}\PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Dates as aCategory 5\PYZdq{}}\PY{p}{)}\PY{p}{]}
+          \PY{k+kp}{colnames}\PY{p}{(}hurricane\PYZus{}table\PY{p}{)} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Dates\PYZdq{}}\PY{p}{)}
+          
+          \PY{c+c1}{\PYZsh{} Split the dates on space and get the 3rd element in the split }
+          \PY{c+c1}{\PYZsh{} list because that is the year in the date.}
+          hurricane\PYZus{}table\PY{o}{\PYZdl{}}Dates \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{strsplit}\PY{p}{(}hurricane\PYZus{}table\PY{o}{\PYZdl{}}Dates\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{ \PYZsq{}}\PY{p}{)}
+          
+          \PY{c+c1}{\PYZsh{} lapply returns a list and so we unlist/unpack the list to get the numbers}
+          hurricane\PYZus{}table\PY{o}{\PYZdl{}}Season \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{unlist}\PY{p}{(}\PY{k+kp}{lapply}\PY{p}{(}hurricane\PYZus{}table\PY{o}{\PYZdl{}}Dates\PY{p}{,} 
+                                                  \PY{k+kr}{function}\PY{p}{(}x\PY{p}{)} x\PY{p}{[[}\PY{l+m}{3}\PY{p}{]]}\PY{p}{)}\PY{p}{)}
+          
+          \PY{c+c1}{\PYZsh{} Convert the Seasons to decades}
+          hurricane\PYZus{}table\PY{o}{\PYZdl{}}Season\PYZus{}decade \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{unlist}\PY{p}{(}\PY{k+kp}{lapply}\PY{p}{(}hurricane\PYZus{}table\PY{o}{\PYZdl{}}Season\PY{p}{,} 
+                                                         convert\PYZus{}seasons\PYZus{}to\PYZus{}decade\PY{p}{)}\PY{p}{)}
+          
+          \PY{c+c1}{\PYZsh{} Group by Season\PYZus{}decade and sum the counts}
+          hurricane\PYZus{}table\PY{o}{\PYZdl{}}one\PYZus{}column \PY{o}{=} \PY{l+m}{1}
+          hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} hurricane\PYZus{}table \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+            group\PYZus{}by\PY{p}{(}Season\PYZus{}decade\PY{p}{)} \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+            summarise\PY{p}{(}
+              total\PYZus{}hurricanes \PY{o}{=} \PY{k+kp}{sum}\PY{p}{(}one\PYZus{}column\PY{p}{)}
+            \PY{p}{)}
+          
+          \PY{k+kr}{return}\PY{p}{(}hurricane\PYZus{}table\PY{p}{)}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \subsection{Get the html tables and convert to final processed
+dataframes}\label{get-the-html-tables-and-convert-to-final-processed-dataframes}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{\PYZsh{}URLs}
+        wiki\PYZus{}url\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+s}{\PYZdq{}}\PY{l+s}{https://en.wikipedia.org/wiki/List\PYZus{}of\PYZus{}Category\PYZus{}4\PYZus{}Atlantic\PYZus{}hurricanes\PYZdq{}}
+        wiki\PYZus{}url\PYZus{}for\PYZus{}category\PYZus{}5\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+s}{\PYZdq{}}\PY{l+s}{https://en.wikipedia.org/wiki/List\PYZus{}of\PYZus{}Category\PYZus{}5\PYZus{}Atlantic\PYZus{}hurricanes\PYZdq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{\PYZsh{} Fetching the Hurricane Tables}
+        category\PYZus{}4\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}html\PYZus{}table\PY{p}{(}wiki\PYZus{}url\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes\PY{p}{)}
+        category\PYZus{}5\PYZus{}hurricane\PYZus{}tables \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}html\PYZus{}table\PY{p}{(}wiki\PYZus{}url\PYZus{}for\PYZus{}category\PYZus{}5\PYZus{}hurricanes\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{\PYZsh{} Process the raw html tables and convert them to the structure needed}
+        final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} process\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}tables\PY{p}{(}
+            category\PYZus{}4\PYZus{}hurricane\PYZus{}tables\PY{p}{)}
+        final\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} process\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}tables\PY{p}{(}
+            category\PYZus{}5\PYZus{}hurricane\PYZus{}tables\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Combine both the tables}
+        final\PYZus{}combined\PYZus{}hurricane\PYZus{}table \PY{o}{\PYZlt{}\PYZhy{}} bind\PYZus{}rows\PY{p}{(}final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{p}{,} 
+                                                    final\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}table\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{Analysing probability
+distributions}\label{analysing-probability-distributions}
+
+We will use the dpois() function of R to model the probability
+distributions of our hurricane data. If we have the following code:
+
+\textbf{dpois(x = 1, lambda = lambda\_for\_category\_4\_hurricanes)}
+
+This is the \emph{Probability of 1 category-4 hurricane occuring in a
+decade when the mean hurricane rate is equal to the mean category-4
+hurricanes.}
+
+Similarly, we can calculate the probability of \emph{n} category-4
+hurricanes occuring in a decade.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} lamba\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{mean}\PY{p}{(}
+             final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{)}
+         lamba\PYZus{}for\PYZus{}category\PYZus{}5\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{mean}\PY{p}{(}
+             final\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{)}
+         lambda\PYZus{}for\PYZus{}combined\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{mean}\PY{p}{(}
+             final\PYZus{}combined\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} get\PYZus{}poisson\PYZus{}probabilities \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}lambda\PY{p}{)}\PY{p}{\PYZob{}}
+             
+             poisson\PYZus{}probabilities \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{p}{)}
+             \PY{k+kr}{for} \PY{p}{(}i \PY{k+kr}{in} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{50}\PY{p}{)}\PY{p}{\PYZob{}}
+                 
+               \PY{c+c1}{\PYZsh{} Probability of exactly *i* hurricanes occuring in a decade}
+               poisson\PYZus{}probabilities\PY{p}{[}i\PY{p}{]} \PY{o}{\PYZlt{}\PYZhy{}} dpois\PY{p}{(}i\PY{p}{,} lambda \PY{o}{=} \PY{l+m}{7}\PY{p}{)}
+             \PY{p}{\PYZcb{}}
+         
+             poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.data.frame}\PY{p}{(}poisson\PYZus{}probabilities\PY{p}{)}
+             poisson\PYZus{}probabilities\PYZus{}df\PY{o}{\PYZdl{}}num\PYZus{}hurricanes\PYZus{}in\PYZus{}the\PYZus{}decade \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{50}\PY{p}{)}
+             \PY{k+kp}{colnames}\PY{p}{(}poisson\PYZus{}probabilities\PYZus{}df\PY{p}{)} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{poisson\PYZus{}probabilities\PYZdq{}}\PY{p}{,} 
+                                                     \PY{l+s}{\PYZdq{}}\PY{l+s}{number\PYZus{}of\PYZus{}hurricanes\PYZdq{}}\PY{p}{)}
+             
+             \PY{k+kr}{return}\PY{p}{(}poisson\PYZus{}probabilities\PYZus{}df\PY{p}{)}
+         \PY{p}{\PYZcb{}}
+         
+         category\PYZus{}4\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}poisson\PYZus{}probabilities\PY{p}{(}
+             lambda \PY{o}{=} lamba\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes\PY{p}{)}
+         category\PYZus{}5\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}poisson\PYZus{}probabilities\PY{p}{(}
+             lambda \PY{o}{=} lamba\PYZus{}for\PYZus{}category\PYZus{}5\PYZus{}hurricanes\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} category\PYZus{}4\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}x \PY{o}{=} number\PYZus{}of\PYZus{}hurricanes\PY{p}{,} y \PY{o}{=} poisson\PYZus{}probabilities\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}point\PY{p}{(}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}line\PY{p}{(}color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{red\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes in a Decade\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability of the Hurricane\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Distribution of Number of Category \PYZhy{} 4 Hurricanes in a Decade\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} category\PYZus{}5\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}x \PY{o}{=} number\PYZus{}of\PYZus{}hurricanes\PY{p}{,} y \PY{o}{=} poisson\PYZus{}probabilities\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}point\PY{p}{(}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}line\PY{p}{(}color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{red\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes in a Decade\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability of the Hurricane\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Distribution of Number of Category \PYZhy{} 5 Hurricanes in a Decade\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We observe that the probability of a hurricane occuring (for both
+categories), shows a distribution similar to a Poisson Distribution.
+
+    \subsection{Analysing the cumulative probability
+distribution}\label{analysing-the-cumulative-probability-distribution}
+
+Let us look at another function:
+
+\textbf{ppois(x = n, lambda = lambda\_for\_category\_4\_hurricanes)}
+
+This function gives us the "Probability of \emph{n or fewer hurricanes}
+occuring in a decade when the rate is the mean category-4 hurricanes".
+Lets plot it
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} get\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}lambda\PY{p}{)}\PY{p}{\PYZob{}}
+             
+             poisson\PYZus{}probabilities \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{p}{)}
+             \PY{k+kr}{for} \PY{p}{(}i \PY{k+kr}{in} \PY{l+m}{1}\PY{o}{:}\PY{l+m}{50}\PY{p}{)}\PY{p}{\PYZob{}}
+               \PY{c+c1}{\PYZsh{} Probability of *i* or less hurricanes occuring in a decade}
+               poisson\PYZus{}probabilities\PY{p}{[}i\PY{p}{]} \PY{o}{\PYZlt{}\PYZhy{}} ppois\PY{p}{(}i\PY{p}{,} lambda \PY{o}{=} lambda\PY{p}{)}
+             \PY{p}{\PYZcb{}}
+         
+             poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.data.frame}\PY{p}{(}poisson\PYZus{}probabilities\PY{p}{)}
+             poisson\PYZus{}probabilities\PYZus{}df\PY{o}{\PYZdl{}}num\PYZus{}hurricanes\PYZus{}in\PYZus{}the\PYZus{}decade \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+m}{1}\PY{o}{:}\PY{l+m}{50}\PY{p}{)}
+             \PY{k+kp}{colnames}\PY{p}{(}poisson\PYZus{}probabilities\PYZus{}df\PY{p}{)} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{poisson\PYZus{}probabilities\PYZdq{}}\PY{p}{,} 
+                                                     \PY{l+s}{\PYZdq{}}\PY{l+s}{number\PYZus{}of\PYZus{}hurricanes\PYZdq{}}\PY{p}{)}
+             
+             \PY{k+kr}{return}\PY{p}{(}poisson\PYZus{}probabilities\PYZus{}df\PY{p}{)}
+         \PY{p}{\PYZcb{}}
+         
+         category\PYZus{}4\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PY{p}{(}
+             lambda \PY{o}{=} lamba\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes\PY{p}{)}
+         category\PYZus{}5\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZlt{}\PYZhy{}} get\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PY{p}{(}
+             lambda \PY{o}{=} lamba\PYZus{}for\PYZus{}category\PYZus{}5\PYZus{}hurricanes\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} category\PYZus{}4\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}x \PY{o}{=} number\PYZus{}of\PYZus{}hurricanes\PY{p}{,} y \PY{o}{=} poisson\PYZus{}probabilities\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}point\PY{p}{(}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}line\PY{p}{(}color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{red\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes in a Decade\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability of the Hurricane\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Distribution of n or fewer Category \PYZhy{} 4 Hurricanes in a Decade\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} category\PYZus{}5\PYZus{}ppois\PYZus{}poisson\PYZus{}probabilities\PYZus{}df \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}x \PY{o}{=} number\PYZus{}of\PYZus{}hurricanes\PY{p}{,} y \PY{o}{=} poisson\PYZus{}probabilities\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}point\PY{p}{(}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}line\PY{p}{(}color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{red\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes in a Decade\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability of the Hurricane\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Distribution of n or fewer Category \PYZhy{} 5 Hurricanes in a Decade\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Is it an exact Poisson
+distribution?}\label{is-it-an-exact-poisson-distribution}
+
+    Although the plots look similar to a Poisson distribution, we cannot
+assume that the data is indeed a Poisson distribution by looking at the
+plots. Poisson distribution has a property that the mean and variance
+are equal and we use this property to test the fit of our data. Wecheck
+if this property is satisfied or \emph{almost satisfied} by our data. We
+compute the ratio of mean and variance of our data:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} variance\PYZus{}of\PYZus{}cat\PYZus{}4\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} var\PY{p}{(}
+             final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{)}
+         mean\PYZus{}of\PYZus{}cat\PYZus{}4\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{mean}\PY{p}{(}
+             final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{)}
+         
+         variance\PYZus{}mean\PYZus{}ratio\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{round}\PY{p}{(}
+             variance\PYZus{}of\PYZus{}cat\PYZus{}4\PYZus{}hurricanes\PY{o}{/}mean\PYZus{}of\PYZus{}cat\PYZus{}4\PYZus{}hurricanes\PY{p}{,} \PY{l+m}{2}\PY{p}{)}
+         variance\PYZus{}mean\PYZus{}ratio\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes
+\end{Verbatim}
+
+
+    2.82
+
+    
+    We see that the variance of our data is 2.82 times larger than the mean
+of the data. We check if such a behaviour is normal or not for a poisson
+distribution. We check if this is just a one time anomaly or is it
+recurring or not. We will perform a \textbf{Monte Carlo Simulation} and
+repeatedly sample values from the poisson distribution with the
+mean/lambda equal to the mean of the hurricane data. Our main aim of the
+simulation is to check -
+
+\emph{Assuming that the category 4 hurricane data is a perfect Poisson
+distribution, how likely it is for us to generate samples with a
+variance-to-mean ratio equal to 2.82}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{k+kp}{set.seed}\PY{p}{(}\PY{l+m}{420}\PY{p}{)}
+         variance\PYZus{}mean\PYZus{}ratio\PYZus{}from\PYZus{}samples \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{p}{)}
+         num\PYZus{}of\PYZus{}monte\PYZus{}carlo\PYZus{}simulations \PY{o}{\PYZlt{}\PYZhy{}} \PY{l+m}{1000}
+         num\PYZus{}of\PYZus{}points\PYZus{}in\PYZus{}sample \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{nrow}\PY{p}{(}final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{p}{)}
+         
+         \PY{k+kr}{for} \PY{p}{(}monte\PYZus{}carlo\PYZus{}experiment\PYZus{}index \PY{k+kr}{in}  \PY{l+m}{1}\PY{o}{:}num\PYZus{}of\PYZus{}monte\PYZus{}carlo\PYZus{}simulations\PY{p}{)}\PY{p}{\PYZob{}}
+             poisson\PYZus{}sample \PY{o}{\PYZlt{}\PYZhy{}} rpois\PY{p}{(}n \PY{o}{=} num\PYZus{}of\PYZus{}points\PYZus{}in\PYZus{}sample\PY{p}{,} 
+                                     lambda \PY{o}{=} lamba\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes\PY{p}{)}
+             variance\PYZus{}mean\PYZus{}ratio\PYZus{}from\PYZus{}samples\PY{p}{[[}monte\PYZus{}carlo\PYZus{}experiment\PYZus{}index\PY{p}{]]} \PY{o}{\PYZlt{}\PYZhy{}} var\PY{p}{(}
+                 poisson\PYZus{}sample\PY{p}{)}\PY{o}{/}\PY{k+kp}{mean}\PY{p}{(}poisson\PYZus{}sample\PY{p}{)}
+         \PY{p}{\PYZcb{}}
+         
+         percentage\PYZus{}of\PYZus{}samples\PYZus{}with\PYZus{}variance\PYZus{}mean\PYZus{}ratio\PYZus{}greater\PYZus{}than\PYZus{}2.82 \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{sum}\PY{p}{(}
+             variance\PYZus{}mean\PYZus{}ratio\PYZus{}from\PYZus{}samples \PY{o}{\PYZgt{}} \PYZbs{}
+             variance\PYZus{}mean\PYZus{}ratio\PYZus{}for\PYZus{}category\PYZus{}4\PYZus{}hurricanes\PY{p}{)}\PY{o}{*}\PY{l+m}{100}\PY{o}{/}num\PYZus{}of\PYZus{}monte\PYZus{}carlo\PYZus{}simulations
+         percentage\PYZus{}of\PYZus{}samples\PYZus{}with\PYZus{}variance\PYZus{}mean\PYZus{}ratio\PYZus{}greater\PYZus{}than\PYZus{}2.82
+\end{Verbatim}
+
+
+    0.1
+
+    
+    This shows that only 0.1\% of the monte carlo samples have a
+variance-mean ratio greater than 2.82. Hence, the hurricane count in a
+decade does not exhibit an exact Poisson process and the variability in
+hurricane counts is higher than a Poisson distribution with constant
+rate. This means that for a distribution of hurricane counts in a
+decade, the lambda/rate is not constant but keeps changing.
+
+    \subsection{Reasons for the varying lambda/rate in hurricane
+data}\label{reasons-for-the-varying-lambdarate-in-hurricane-data}
+
+    The reasons for the non-constant rate/lambda in our hurricane data is
+because external climatic conditions affect the occurence of hurricane
+and ultimately change the lambda. These external factors could be
+\textbf{changes in pressure, wind speeds, El Nino etc...} This leads to
+hurricane data being a varying Poisson distribution or an
+\textbf{inhomogeneous Poisson distribution} which can be described as a
+Poisson distribution with a variable rate/lambda.
+
+    \subsection{Analysing QQ Plot}\label{analysing-qq-plot}
+
+Quantile plots are a good way to look at what distribution a data might
+belong to. Here, we plot a quantile plot of our hurricane data (using
+the category-4 data again) and quantiles drawn from a theoretical
+Poisson distribution.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} qqcomp\PY{p}{(}fitdist\PY{p}{(}final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{pois\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The quantile plot strengthens our conclusion that our hurricane data is
+not entirely a Poisson distribution with a constant rate. What if we use
+a negative binomial distribution for this?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} qqcomp\PY{p}{(}fitdist\PY{p}{(}final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table\PY{o}{\PYZdl{}}total\PYZus{}hurricanes\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{nbinom\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_35_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    This shows that the hurricane count data infact is similar to a
+\textbf{negative binomial distribution}. Poisson distributions are
+special cases of negative binomial distributions and our above
+distribution is a case of \textbf{overdispersed Poisson distribution}.
+In an overdispersed Poisson distribution, the observations are
+overdispersed in comparison to a theoretical Poisson distribution where
+variance is equal to the mean. This overdispersion causes the variance
+of the data to be greater than the mean - which is the case for our
+hurricane data. Such overdispersion can be reduced by varying the
+variance and keeping the mean constant. Since negative binomial
+distributions have one more parameter than a Poisson distribution, we
+can vary the parameter to adjust the variance keeping the mean constant.
+
+\emph{References for the above explanation - }
+
+{[}1{]}
+https://stats.stackexchange.com/questions/32035/checking-poisson-distribution-plot-using-mean-and-variance-relationship
+
+{[}2{]}
+https://en.wikipedia.org/wiki/Negative\_binomial\_distribution\#Overdispersed\_Poisson
+
+    \subsection{Analysing the variables - an exploratory data
+analysis}\label{analysing-the-variables---an-exploratory-data-analysis}
+
+Having
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} final\PYZus{}category\PYZus{}4\PYZus{}hurricane\PYZus{}table \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}\PY{k+kp}{as.factor}\PY{p}{(}Season\PYZus{}decade\PY{p}{)}\PY{p}{,} total\PYZus{}hurricanes\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}bar\PY{p}{(}stat \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{identity\PYZdq{}}\PY{p}{,} color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{black\PYZdq{}}\PY{p}{,} fill \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{tomato\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}line\PY{p}{(}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Decades\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Count of Category \PYZhy{} 4 Hurricanes over the Decades\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+geom\_path: Each group consists of only one observation. Do you need to adjust
+the group aesthetic?
+
+    \end{Verbatim}
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We see that the number of category-4 hurricanes occuring in a decade has
+increased with time gradually.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} final\PYZus{}category\PYZus{}5\PYZus{}hurricane\PYZus{}table \PY{o}{\PYZpc{}\PYZgt{}\PYZpc{}}
+         ggplot\PY{p}{(}aes\PY{p}{(}\PY{k+kp}{as.factor}\PY{p}{(}Season\PYZus{}decade\PY{p}{)}\PY{p}{,} total\PYZus{}hurricanes\PY{p}{)}\PY{p}{)}\PY{o}{+}
+         geom\PYZus{}bar\PY{p}{(}stat \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{identity\PYZdq{}}\PY{p}{,} color \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{black\PYZdq{}}\PY{p}{,} fill \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{skyblue\PYZdq{}}\PY{p}{)}\PY{o}{+}
+         labs\PY{p}{(}x \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Decades\PYZdq{}}\PY{p}{,} 
+              y \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Number of Hurricanes\PYZdq{}}\PY{p}{,} 
+              title \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{Count of Category \PYZhy{} 5 Hurricanes over the Decades\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    However, in the case of category-5 hurricanes, the distribution/count of
+hurricanes is not
+
+    Now, let us upload the whole raw data and clean it again to draw some
+more analysis. (Till now, the dataset we were working on was decade
+level)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} Load whole of csv data and not just decade wise}
+         category\PYZus{}4 \PY{o}{=} read.csv\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../input/category\PYZhy{}4/Category4Hurricanes \PYZhy{} Sheet1.csv\PYZdq{}}\PY{p}{,} 
+                               header \PY{o}{=} \PY{k+kc}{TRUE}\PY{p}{)}
+         category\PYZus{}5 \PY{o}{=} read.csv\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../input/category\PYZhy{}5/Category5Hurricanes \PYZhy{} Sheet1.csv\PYZdq{}}\PY{p}{,} 
+                               header \PY{o}{=} \PY{k+kc}{TRUE}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{c+c1}{\PYZsh{} Changing column names for cateogry\PYZus{}4 dataset}
+         \PY{k+kp}{colnames}\PY{p}{(}category\PYZus{}4\PY{p}{)} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Name\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Season\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Month\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}knots\PYZdq{}}\PY{p}{,} 
+                                   \PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}kmh\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}mph\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Min\PYZus{}pressure\PYZus{}mbar\PYZdq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Changing column names for cateogry\PYZus{}5 dataset}
+         \PY{k+kp}{colnames}\PY{p}{(}category\PYZus{}5\PY{p}{)} \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Name\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Dates\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Duration\PYZus{}hours\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{WindSpeedsMPH\PYZdq{}}\PY{p}{,} 
+                                   \PY{l+s}{\PYZdq{}}\PY{l+s}{PressurehPA\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Affected\PYZus{}Areas\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Deaths\PYZdq{}}\PY{p}{,} 
+                                   \PY{l+s}{\PYZdq{}}\PY{l+s}{DamageUSDMillions\PYZdq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Clean month column for Category 4}
+         category\PYZus{}4\PY{o}{\PYZdl{}}Month \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{ .*\PYZdl{}\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,}category\PYZus{}4\PY{o}{\PYZdl{}}Month\PY{p}{)}
+         category\PYZus{}4\PY{o}{\PYZdl{}}Month \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{,\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}4\PY{o}{\PYZdl{}}Month\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Clean min\PYZus{}pressure column for Category 4}
+         from \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{≤ \PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZhy{}\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{–\PYZdq{}}\PY{p}{)}
+         to \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         
+         gsub\PYZus{}func \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kr}{function}\PY{p}{(}pattern\PY{p}{,} replacement\PY{p}{,} x\PY{p}{)} \PY{p}{\PYZob{}}
+           \PY{k+kr}{for}\PY{p}{(}i \PY{k+kr}{in} \PY{l+m}{1}\PY{o}{:}\PY{k+kp}{length}\PY{p}{(}pattern\PY{p}{)}\PY{p}{)}
+             x \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}pattern\PY{p}{[}i\PY{p}{]}\PY{p}{,} replacement\PY{p}{[}i\PY{p}{]}\PY{p}{,} x\PY{p}{)}
+           x
+         \PY{p}{\PYZcb{}}
+         
+         category\PYZus{}4\PY{o}{\PYZdl{}}Min\PYZus{}pressure\PYZus{}mbar \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.numeric}\PY{p}{(}
+             gsub\PYZus{}func\PY{p}{(}from\PY{p}{,} to\PY{p}{,} category\PYZus{}4\PY{o}{\PYZdl{}}Min\PYZus{}pressure\PYZus{}mbar\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{}  Clean Category 5 data}
+         category\PYZus{}5\PY{o}{\PYZdl{}}Dates \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}
+             \PY{l+s}{\PYZdq{}}\PY{l+s}{†\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}Dates\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}Year \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.numeric}\PY{p}{(}
+             \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{.+, \PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}Dates\PY{p}{)}\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}Month \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}
+             \PY{l+s}{\PYZdq{}}\PY{l+s}{[0\PYZhy{}9, ].+\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}Dates\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}
+             \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZgt{}\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}WindSpeedsMPH \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.numeric}\PY{p}{(}
+             \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{([0\PYZhy{}9]+).*\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZbs{}\PYZbs{}1\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}WindSpeedsMPH\PY{p}{)}\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}PressurehPA \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.numeric}\PY{p}{(}
+             \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{([0\PYZhy{}9]+).*\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZbs{}\PYZbs{}1\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}PressurehPA\PY{p}{)}\PY{p}{)}
+         
+         category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}
+             \PY{l+s}{\PYZdq{}}\PY{l+s}{([0\PYZhy{}9]+).*\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZbs{}\PYZbs{}1\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{gsub}\PY{p}{(}
+             \PY{l+s}{\PYZdq{}}\PY{l+s}{Extensive\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions\PY{p}{)}
+         category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions \PY{o}{\PYZlt{}\PYZhy{}} \PY{k+kp}{as.numeric}\PY{p}{(}
+             \PY{k+kp}{gsub}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZbs{}\PYZbs{}\PYZdl{}\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{,} category\PYZus{}5\PY{o}{\PYZdl{}}DamageUSDMillions\PY{p}{)}\PY{p}{)}
+         
+         \PY{k+kp}{head}\PY{p}{(}category\PYZus{}4\PY{p}{)}
+         \PY{k+kp}{head}\PY{p}{(}category\PYZus{}5\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{tabular}{r|lllllll}
+ Name & Season & Month & Max\_wind\_knots & Max\_wind\_kmh & Max\_wind\_mph & Min\_pressure\_mbar\\
+\hline
+	 Hurricane \#3                 & 1853                           & August                         & 130                            & 240                            & 150                            & 924                           \\
+	 "1856 Last Island Hurricane" & 1856                         & August                       & 130                          & 240                          & 150                          & 934                         \\
+	 Hurricane \#6                 & 1866                           & September                      & 120                            & 220                            & 140                            & 938                           \\
+	 Hurricane \#7                 & 1878                           & September                      & 120                            & 220                            & 140                            & 938                           \\
+	 Hurricane \#2                 & 1880                           & August                         & 130                            & 240                            & 150                            & 931                           \\
+	 Hurricane \#8                 & 1880                           & September                      & 120                            & 220                            & 140                            & 928                           \\
+\end{tabular}
+
+
+    
+    \begin{tabular}{r|llllllllll}
+ Name & Dates & Duration\_hours & WindSpeedsMPH & PressurehPA & Affected\_Areas & Deaths & DamageUSDMillions & Year & Month\\
+\hline
+	 "Cuba"                                                                & October 19, 1924                                                      & 12                                                                    & 165                                                                   & 910                                                                   & Central America, Mexico, CubaFlorida, The Bahamas                     &   90                                                                  &  NA                                                                   & 1924                                                                  & October                                                              \\
+	 "San Felipe IIOkeechobee"                                             & September 13–14, 1928                                                 & 12                                                                    & 160                                                                   & 929                                                                   & Lesser Antilles, The BahamasUnited States East Coast, Atlantic Canada & 4000                                                                  & 100                                                                   & 1928                                                                  & September                                                            \\
+	 "Bahamas"                                                             & September 5–6, 1932                                                   & 24                                                                    & 160                                                                   & 921                                                                   & The Bahamas, Northeastern United States                               &   16                                                                  &  NA                                                                   & 1932                                                                  & September                                                            \\
+	 "Cuba"                                                                & November 5–8, 1932                                                    & 78                                                                    & 175                                                                   & 915                                                                   & Lesser Antilles, Jamaica, Cayman IslandsCuba, The Bahamas, Bermuda    & 3103                                                                  &  40                                                                   & 1932                                                                  & November                                                             \\
+	 "Cuba–Brownsville"                                                    & August 30, 1933                                                       & 12                                                                    & 160                                                                   & 930                                                                   & The Bahamas, Cuba, FloridaTexas, Tamaulipas                           &  179                                                                  &  27                                                                   & 1933                                                                  & August                                                               \\
+	 "Tampico"                                                             & September 21, 1933                                                    & 12                                                                    & 160                                                                   & 929                                                                   & Jamaica, Yucatán Peninsula                                            &  184                                                                  &   5                                                                   & 1933                                                                  & September                                                            \\
+\end{tabular}
+
+
+    
+    After cleaning the data, we can try drawing correlation between
+integer/numerical type columns. For category 4 data, 3 of the 4
+numerical columns are of speed(in different notations), so it is obvious
+that they will be highly correlated (\textasciitilde{}1). The important
+correlation is between speed and pressure. In our findings, there is a
+negative correlation between them, which can be justified according to
+http://ww2010.atmos.uiuc.edu/(Gh)/guides/mtr/hurr/stages/cane/pswd.rxml
+.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{k+kn}{library}\PY{p}{(}reshape2\PY{p}{)}
+         cormat \PY{o}{\PYZlt{}\PYZhy{}} cor\PY{p}{(}category\PYZus{}4\PY{p}{[}\PY{p}{,} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}knots\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}kmh\PYZdq{}}\PY{p}{,} 
+                                      \PY{l+s}{\PYZdq{}}\PY{l+s}{Max\PYZus{}wind\PYZus{}mph\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Min\PYZus{}pressure\PYZus{}mbar\PYZdq{}}\PY{p}{)}\PY{p}{]}\PY{p}{,} 
+                       use \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{complete.obs\PYZdq{}}\PY{p}{,} method \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{pearson\PYZdq{}}\PY{p}{)}
+         melted\PYZus{}cormat \PY{o}{\PYZlt{}\PYZhy{}} melt\PY{p}{(}cormat\PY{p}{)}
+         
+         ggplot\PY{p}{(}data \PY{o}{=} melted\PYZus{}cormat\PY{p}{,} aes\PY{p}{(}x\PY{o}{=}Var1\PY{p}{,} y\PY{o}{=}Var2\PY{p}{,} fill\PY{o}{=}value\PY{p}{)}\PY{p}{)} \PY{o}{+} geom\PYZus{}tile\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+
+    \end{Verbatim}
+
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_46_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    For category 5, below is the correlation matrix. Here also, wind speed
+and pressure are negatively correlated.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} cormat5 \PY{o}{\PYZlt{}\PYZhy{}} cor\PY{p}{(}category\PYZus{}5\PY{p}{[}\PY{p}{,} \PY{k+kt}{c}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Duration\PYZus{}hours\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{WindSpeedsMPH\PYZdq{}}\PY{p}{,} 
+                                      \PY{l+s}{\PYZdq{}}\PY{l+s}{PressurehPA\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Deaths\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{DamageUSDMillions\PYZdq{}}\PY{p}{)}\PY{p}{]}\PY{p}{,} 
+                       use \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{complete.obs\PYZdq{}}\PY{p}{,} method \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{pearson\PYZdq{}}\PY{p}{)}
+        melted\PYZus{}cormat5 \PY{o}{\PYZlt{}\PYZhy{}} melt\PY{p}{(}cormat5\PY{p}{)}
+        
+        ggplot\PY{p}{(}data \PY{o}{=} melted\PYZus{}cormat5\PY{p}{,} aes\PY{p}{(}x\PY{o}{=}Var1\PY{p}{,} y\PY{o}{=}Var2\PY{p}{,} fill\PY{o}{=}value\PY{p}{)}\PY{p}{)} \PY{o}{+} geom\PYZus{}tile\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
