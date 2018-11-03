@@ -14,12 +14,43 @@ firstMomentCalc <- function(input_data){
   return (temp/length(input_data))
 }
 
+mom_point <- function(input_data){
+  a = mean(input_data)
+  print(paste("First theoretical moment (Population mean) about origin:", a))
+  # Estimating the parameters 
+  a_hat = firstMomentCalc(input_data)
+  print(paste("Estimated parameter 1 through MOM:", a_hat))
+}
+
+mom_uniform <- function(input_data){
+  mu_hat = mean(input_data)
+  var_hat = secondMomentCalc(input_data, mu_hat)
+  a_hat = mu_hat - sqrt(3*(var_hat - mu_hat^2 ))
+  b_hat = mu_hat + sqrt(3*(var_hat - mu_hat^2 ))
+  print(paste("Estimated parameter 1 through MOM:", a_hat))
+  print(paste("Estimated parameter 2 through MOM:", b_hat))
+}
+
+mom_binomial <- function(input_data){
+  mu_hat = mean(input_data)
+  var_hat = secondMomentCalc(input_data, mu_hat)
+  p_hat = (mu_hat + mu_hat^2 - var_hat)/mu_hat
+  k_hat = mu_hat^2/(mu_hat + mu_hat^2 - var_hat)
+  print(paste("Estimated parameter 1 through MOM:", p_hat))
+  print(paste("Estimated parameter 2 through MOM:", k_hat))
+}
+
 mom_bernoulli <- function(input_data){
   p = mean(input_data)
   print(paste("First theoretical moment (Population mean) about origin:", p))
   # Estimating the parameters 
   p_hat = firstMomentCalc(input_data)
   print(paste("Estimated parameter 1 through MOM:", p_hat))
+}
+
+mom_poisson <- function(input_data){ 
+  lambda_hat = firstMomentCalc(input_data)
+  print(paste("Estimated parameter 1 through MOM:", lambda_hat))
 }
 
 mom_normal <- function(input_data){
@@ -47,30 +78,30 @@ mom_gamma <- function(input_data){
 }
 
 mom_wrapper <- function(input_data, distribution){
-  # if (distribution == "point"){
-  #   print("Point distribution has 1 parametes, hence 1st moment will give an estimator for a")
-  #   estimator <- mom_point(input_data)
-  # }
-  if (distribution == "bernoulli"){
+  if (distribution == "point"){
+    print("Point distribution has 1 parametes, hence 1st moment will give an estimator for a")
+    estimator <- mom_point(input_data)
+  }
+  else if (distribution == "bernoulli"){
     print("Bernoulli distribution only has 1 parameter, hence 1st moment will give an estimator for p")
     estimator <- mom_bernoulli(input_data)
   }
-  # else if (distribution == "binomial"){
-  #   print("Geometric distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
-  #   estimator <- mom_gamma(input_data)
-  # }
+  else if (distribution == "binomial"){
+    print("Geometric distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
+    estimator <- mom_gamma(input_data)
+  }
   # else if (distribution == "geometric"){
   #   print("Geometric distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
   #   estimator <- mom_gamma(input_data)
   # }
-  # else if (distribution == "poisson"){
-  #   print("Gamma distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
-  #   estimator <- mom_gamma(input_data)
-  # }
-  # else if (distribution == "uniform"){
-  #   print("Gamma distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
-  #   estimator <- mom_gamma(input_data)
-  # }
+  else if (distribution == "poisson"){
+    print("Gamma distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
+    estimator <- mom_gamma(input_data)
+  }
+  else if (distribution == "uniform"){
+    print("Gamma distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
+    estimator <- mom_gamma(input_data)
+  }
   else if (distribution == "normal"){
     print("Normal distribution has 2 parameters, mu and sigma, hence we need to find first two moments to give an estimator for its parameters")
     estimator <- mom_normal(input_data)
@@ -105,4 +136,9 @@ mom_wrapper <- function(input_data, distribution){
   # }
 }
 
-mom_wrapper(c(1:1000), "normal")
+population = sample(seq(1, 10000), 10000)
+print("Population mean: ")
+print(mean(population))
+print("Population variance: ")
+print(var(population))
+mom_wrapper(sample(population, 100), "binomial")
