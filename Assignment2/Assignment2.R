@@ -1,3 +1,7 @@
+install.packages("Rlab")
+
+library(Rlab)
+
 ############################################################################
 ########################## UTILITY FUNCTIONS ###############################
 ############################################################################
@@ -8,6 +12,14 @@ secondMomentCalc <- function(input_data, x_bar){
   }
   return (temp/length(input_data))
 }
+
+# secondMomentCalc_Origin <- function(input_data, x_bar){
+#   temp = 0
+#   for (i in input_data){
+#     temp = temp + (i)^2
+#   }
+#   return (temp/length(input_data))
+# }
 
 firstMomentCalc <- function(input_data){
   temp = 0
@@ -37,10 +49,10 @@ mom_bernoulli <- function(input_data){
 mom_binomial <- function(input_data){
   mu_hat = mean(input_data)
   var_hat = secondMomentCalc(input_data, mu_hat)
-  p_hat = (mu_hat + mu_hat^2 - var_hat)/mu_hat
-  k_hat = mu_hat^2/(mu_hat + mu_hat^2 - var_hat)
+  p_hat = (mu_hat - var_hat)/mu_hat
+  n_hat = mu_hat^2/((mu_hat - var_hat))
   print(paste("Estimated parameter 1 through MOM:", p_hat))
-  print(paste("Estimated parameter 2 through MOM:", k_hat))
+  print(paste("Estimated parameter 2 through MOM:", n_hat))
 }
 
 mom_geometric <- function(input_data){ 
@@ -73,7 +85,7 @@ mom_normal <- function(input_data){
 
 mom_exponential <- function(input_data){ 
   theta_hat = firstMomentCalc(input_data)
-  print(paste("Estimated parameter 1 through MOM:", theta_hat))
+  print(paste("Estimated parameter 1 through MOM:", 1/theta_hat))
 }
 
 mom_gamma <- function(input_data){
@@ -89,8 +101,8 @@ mom_gamma <- function(input_data){
 mom_beta <- function(input_data){
   mu_hat = firstMomentCalc(input_data)
   var_hat = secondMomentCalc(input_data, mu_hat)
-  beta_hat = (1-mu_hat)*(var_hat-mu_hat)/(mu_hat^2-var_hat)
-  alpha_hat = mu_hat*beta_hat/(1-mu_hat)
+  beta_hat = (1-mu_hat)*((mu_hat*(1-mu_hat)/var_hat) - 1)
+  alpha_hat = mu_hat*((mu_hat*(1-mu_hat)/var_hat) - 1)
   print(paste("Estimated parameter 1 through MOM:", alpha_hat))
   print(paste("Estimated parameter 2 through MOM:", beta_hat))
 }
@@ -104,7 +116,7 @@ mom_t <- function(input_data){
 
 mom_chisq <- function(input_data){
   p_hat = firstMomentCalc(input_data)
-  print(paste("Estimated parameter 1 through MOM:", 1/p_hat))
+  print(paste("Estimated parameter 1 through MOM:", p_hat))
 }
 
 ############################################################################
@@ -116,33 +128,68 @@ mom_wrapper <- function(distribution, population = 0){
     estimator <- mom_point(input_data)
   }
   else if (distribution == "bernoulli"){
+    if (population == 0){
+      p = 0.5
+      input_data = rbern(10000,p)  
+    } else{
+      input_data = population
+    }
+    print("Population parameter: ")
+    print(p)
+    sample_data = sample(input_data, 1000)
     print("Bernoulli distribution has 1 parameter, hence 1st moment will give an estimator for p")
-    estimator <- mom_bernoulli(input_data)
+    estimator <- mom_bernoulli(sample_data)
   }
   else if (distribution == "binomial"){
-    print("Binomial distribution has 2 parameters - p and k - hence first two moments will give its parameter estimates")
-    estimator <- mom_binomial(input_data)
+    if (population == 0){
+      n = 100
+      p = 0.5
+      input_data = rbinom(10000,n,p)  
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(paste(p,",",n))
+    sample_data = sample(input_data, 1000)
+    print("Binomial distribution has 2 parameters - n and p - hence first two moments will give its parameter estimates")
+    estimator <- mom_binomial(sample_data)
   }
   else if (distribution == "geometric"){
+    if (population == 0){
+      p = 0.5
+      input_data = rgeom(10000,p)  
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(p)
+    sample_data = sample(input_data, 1000)
     print("Geometric distribution has 1 parameter, hence 1st moment will give an estimator for p")
-    estimator <- mom_geometric(input_data)
+    estimator <- mom_geometric(sample_data)
   }
   else if (distribution == "poisson"){
+    if (population == 0){
+      lambda = 0.5
+      input_data = rpois(10000,lambda)  
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(lambda)
+    sample_data = sample(input_data, 1000)
     print("Poisson distribution has 1 parameter, hence 1st moment will give an estimator for lambda")
     estimator <- mom_poisson(input_data)
   }
   else if (distribution == "uniform"){
     if (population == 0){
-      input_data = runif(10000,0,100)  
+      a = 0
+      b = 100
+      input_data = runif(10000,a,b)  
     } else{
       input_data = population
     }
-    m = mean(input_data)
-    v = var(input_data)
-    print("Population mean: ")
-    print(m)
-    print("Population variance: ")
-    print(v)
+    print("Population parameters: ")
+    print(paste(a,",",b))
     print("Uniform distribution has 2 parameters - a and b - hence first two moments will give its parameter estimates")
     sample_data = sample(input_data, 1000)
     estimator <- mom_uniform(sample_data)
@@ -166,24 +213,73 @@ mom_wrapper <- function(distribution, population = 0){
     points(sample_data, dnorm(sample_data, estimator[1], estimator[2]), col='green')
   }
   else if (distribution == "exponential"){
+    if (population == 0){
+      theta = 4
+      input_data = rexp(10000,theta)  
+    } else{
+      input_data = population
+    }
+    print("Population parameter: ")
+    print(theta)
     print("Exponential distribution has 1 parameter, hence 1st moment will give an estimator for theta")
-    estimator <- mom_exponential(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_exponential(sample_data)
   }
   else if (distribution == "gamma"){
+    if (population == 0){
+      alpha = 2
+      beta = 1
+      input_data = rgamma(10000, alpha = alpha, beta = beta)  
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(paste(alpha,",",beta))
     print("Gamma distribution has 2 parameters - alpha and theta - hence first two moments will give its parameter estimates")
-    estimator <- mom_gamma(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_gamma(sample_data)
   }
   else if (distribution == "beta"){
+    # Assuming alpha nad beta are in the range [0,1]
+    if (population == 0){
+      alpha = 0.5
+      beta = 0.3
+      input_data = rbeta(10000, shape1 = alpha, shape2 = beta)  
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(paste(alpha,",",beta))
     print("Beta distribution has 2 parameters - alpha and beta - hence first two moments will give its parameter estimates")
-    estimator <- mom_beta(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_beta(sample_data)
   }
   else if (distribution == "t"){
+    # Assumg degree of freedom to be above 2
+    if (population == 0){
+      dog = 5
+      input_data = rt(10000, df = dog)  
+    } else{
+      input_data = population
+    }
+    print("Population parameter: ")
+    print(dog)
     print("T distribution has 1 parameter, hence the 1st moment will give an estimator for v (degree of freedoms)")
-    estimator <- mom_t(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_t(sample_data)
   }
   else if (distribution == "chi square"){
+    if (population == 0){
+      dog = 5
+      input_data = rchisq(10000, df = dog)  
+    } else{
+      input_data = population
+    }
+    print("Population parameter: ")
+    print(dog)
     print("Chi-Square distribution has 1 parameter, hence the 1st moment will give an estimator for p")
-    estimator <- mom_chisq(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_chisq(sample_data)
   }
   # else if (distribution == "multinomial"){
   #   print("Gamma distribution has 2 parameters, alpha and theta, hence we need to find first two moments to give an estimator for its parameters")
