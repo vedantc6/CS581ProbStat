@@ -68,6 +68,7 @@ mom_normal <- function(input_data){
   var_hat = secondMomentCalc(input_data, mu_hat)
   print(paste("Estimated parameter 1 through MOM:", mu_hat))
   print(paste("Estimated parameter 2 through MOM:", var_hat))
+  return(c(mu_hat,var_hat))
 }
 
 mom_exponential <- function(input_data){ 
@@ -109,7 +110,7 @@ mom_chisq <- function(input_data){
 ############################################################################
 ########### MAIN CALL FUNCTION FOR METHOD OF MOMENTS FUNCTIONS #############
 ############################################################################
-mom_wrapper <- function(input_data, distribution){
+mom_wrapper <- function(distribution, population = 0){
   if (distribution == "point"){
     print("Point distribution has 1 parameter, hence 1st moment will give an estimator for a")
     estimator <- mom_point(input_data)
@@ -131,12 +132,38 @@ mom_wrapper <- function(input_data, distribution){
     estimator <- mom_poisson(input_data)
   }
   else if (distribution == "uniform"){
+    if (population == 0){
+      input_data = runif(10000,0,100)  
+    } else{
+      input_data = population
+    }
+    m = mean(input_data)
+    v = var(input_data)
+    print("Population mean: ")
+    print(m)
+    print("Population variance: ")
+    print(v)
     print("Uniform distribution has 2 parameters - a and b - hence first two moments will give its parameter estimates")
-    estimator <- mom_uniform(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_uniform(sample_data)
   }
   else if (distribution == "normal"){
+    if (population == 0){
+      input_data = rnorm(10000,0,1)  
+    } else{
+      input_data = population
+    }
+    m = mean(input_data)
+    v = var(input_data)
+    print("Population mean: ")
+    print(m)
+    print("Population variance: ")
+    print(v)
     print("Normal distribution has 2 parameters - mu and sigma - hence first two moments will give its parameter estimates")
-    estimator <- mom_normal(input_data)
+    sample_data = sample(input_data, 1000)
+    estimator <- mom_normal(sample_data)
+    plot(input_data, dnorm(input_data, m, v), title("Population vs Sample"), col='red')
+    points(sample_data, dnorm(sample_data, estimator[1], estimator[2]), col='green')
   }
   else if (distribution == "exponential"){
     print("Exponential distribution has 1 parameter, hence 1st moment will give an estimator for theta")
@@ -168,12 +195,16 @@ mom_wrapper <- function(input_data, distribution){
   # }
 }
 
-population = sample(seq(1, 10000), 10000)
-# population = rnorm(10000, 40, 20)
-# population = rbeta(10000, 40, 70, ncp = 0)
+# STATEMENTS TO BE EXECUTED BEFORE RUNNING THE MAIN M.O.M. FUNCTION
 
-print("Population mean: ")
-print(mean(population))
-print("Population variance: ")
-print(var(population))
-mom_wrapper(sample(population, 100), "t")
+population = sample(seq(1, 10000), 10000)
+print("Valid Distributions: Point, Bernoulli, Binomial, Geometric, Poisson, Uniform, Normal, Exponential, Gamma, Beta, T, Chi-Square, Multinomial, Multinormal")
+distri = readline("For which distribution, do you want M.O.M. estimation (Please input valid distributions): ")
+if_pop = readline("Do you want to send a random population or use system's default populations (y/n): ")
+
+if (tolower(if_pop) == "y"){
+  mom_wrapper(distri, population)
+}else{
+  mom_wrapper(distri)
+}
+
