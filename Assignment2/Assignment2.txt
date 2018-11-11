@@ -128,6 +128,29 @@ mom_chisq <- function(input_data){
   print(paste("Estimated parameter 1 through MOM:", p_hat))
 }
 
+# Multinomial Distribution
+mom_multinomial <- function(input_data){
+  a = nrow(x)
+  p = c(0,0,0,0,0)
+  for(i in 1:a)
+    p[i]<-1-((var(x[i,]))/mean(x[i,]))
+  n = sum(rowMeans(x))/sum(p[1:a])
+  print("For Multinomial Distribution the parameter n is")
+  print(n)
+  print("The parameter p is ")
+  print(p)
+}
+
+# Multinormal Distribution
+mom_multinormal <- function(input_data){
+  mu_hat = colMeans(input_data)
+  summation = var(input_data)
+  print("For Multinormal Distribution the parameter mu_hat is")
+  print(mu_hat)
+  print("The parameter summation is ")
+  print(summation)
+}
+
 ############################################################################
 ########### MAIN CALL FUNCTION FOR METHOD OF MOMENTS FUNCTIONS #############
 ############################################################################
@@ -301,23 +324,51 @@ mom_wrapper <- function(distribution, population = 0){
     sample_data = sample(input_data, 1000)
     estimator <- mom_chisq(sample_data)
   }
+  else if (distribution == "multinomial"){
+    if (population == 0){
+      p = c(0.15,0.05,0.4,0.1,0.3)
+      input_data = rmultinom(10000,size=5,p)
+      a = nrow(input_data)
+    } else{
+      input_data = population
+    }
+    print("Population parameters: ")
+    print(a)
+    print(p)
+    print("Multinomial distribution has following estimated parameters: ")
+    sample_data = input_data
+    estimator <- mom_multinomial(sample_data)
+  }
+  else if (distribution == "multinormal"){
+    if (population == 0){
+      vari = c(10,3,3,2)
+      sigma = matrix(vari,2,2)
+      input_data = mvrnorm(n = 1000, rep(0, 2), sigma)  
+    } else{
+      input_data = population
+    }
+    print("Population parameter: ")
+    print(vari)
+    print("Multinormal distribution has following estimated parameters")
+    sample_data = input_data
+    estimator <- mom_multinormal(sample_data)
+  }
 }
 
 # STATEMENTS TO BE EXECUTED BEFORE RUNNING THE MAIN M.O.M. FUNCTION
 # You can generate a population
 population = sample(seq(1, 10000), 10000)
+
 # Valid distributions for the program
-print("Valid Distributions: Point, Bernoulli, Binomial, Geometric, Poisson, Uniform, Normal, Exponential, Gamma, Beta, T, Chi-Square")
-
-# Run below two lines one by one to enter the distribution you want and if you want to give your population data or use program data
-distri = readline("For which distribution, do you want M.O.M. estimation (Please input valid distributions): ")
-if_pop = readline("Do you want to send a random population or use system's default populations (y/n): ")
-
-# Run only when above two inputs have been given
-# Else, define if_pop and distri variables on your own.
-if (tolower(if_pop) == "y"){
-  mom_wrapper(distri, population)
-}else{
-  mom_wrapper(distri)
+repeat{
+  cat("Valid Distributions: \n1. Point\n2. Bernoulli\n3. Binomial\n4. Geometric\n5. Poisson\n6. Uniform\n7. Normal\n8. Exponential\n9. Gamma\n10. Beta\n11. T\n12. Chi-Square\n13. Multinomial\n14. Multinormal")
+  if_pop = readline(prompt = "Do you want to send a random population or use system's default populations (y/n): ")
+  distribution <- readline(prompt="For which distribution, do you want M.O.M. estimation (write 'quit' to exit): ")
+  if (tolower(if_pop) == "y"){
+    mom_wrapper(distribution, population)
+  }else{
+    mom_wrapper(distribution)
+  }
+  if(distribution=="quit")
+    break;
 }
-
